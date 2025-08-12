@@ -1,0 +1,8 @@
+# Ignore the node_modules folder from all directories
+node_modules/
+
+# Ignore the database file, as it contains user data
+backend/db.json
+
+# Ignore system files
+.DS_Store

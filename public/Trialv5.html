@@ -925,7 +925,7 @@
 <div id="dashboard" class="hidden-by-password">
     <div class="dashboard-header">
         <img src="images/UCV.png" alt="logo" width="100" style="float: left;">
-        <img src="images/oppm_logo.png" alt="logo" width="100" style="float: right;">
+        <img src="images/oppm logo.png" alt="logo" width="100" style="float: right;">
         <h2>UNIVERSITY OF CAGAYAN VALLEY</h2>
         <p>OFFICE OF THE PHYSICAL PLANT AND MAINTENANCE</p>
         <p>WORK ORDER DASHBOARD</p>
@@ -1095,7 +1095,7 @@
 <div id="about-popup" class="popup-overlay">
     <div class="popup-content">
         <span class="close-btn" onclick="closeAboutPopup()">×</span>
-        <img src="images/grad_pic.jpg" alt="Author's Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block;">
+        <img src="images/grad pic.jpg" alt="Author's Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block;">
         <h3 style="margin-bottom: 20px;">About the Author</h3>
         <p style="text-align: left; line-height: 1.6; font-size: 12pt;">
             This system was created and developed by <strong>Engr. Glenn Dela Cruz Luna, REE, RME, MBA</strong>, a licensed professional with a Bachelor of Science in Electrical Engineering from Cagayan State University and a Master’s degree in Business Administration from the University of Cagayan Valley.
@@ -1850,7 +1850,7 @@
       orders.sort((a, b) => (parseInt(a.woNumber.replace(/\D/g, '')) || 0) - (parseInt(b.woNumber.replace(/\D/g, '')) || 0));
       const printWindow = window.open('', '', 'height=600,width=800');
       printWindow.document.write('<html><head><title>Work Order Summary</title><style>body{font-family:Arial,sans-serif;margin:20px}.header{overflow:hidden;margin-bottom:5px}.header img{width:70px}.header img.left{float:left}.header img.right{float:right}.header .university-info{text-align:center}h3{margin:0;font-size:12pt}p{margin:0;font-size:8pt}hr{border:none;height:2px;background-color:#000;margin:3px 0}h2{text-align:center;margin-top:20px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #000;padding:8px;text-align:left;font-size:10pt}</style></head><body>');
-      printWindow.document.write(`<div class="header"><img src="images/UCV.png" alt="logo" class="left"><img src="images/oppm_logo.png" alt="logo" class="right"><div class="university-info"><h3>UNIVERSITY OF CAGAYAN VALLEY</h3><p>Victor Ventura Perez (VVP) Campus<br>Tuguegarao City<br>(078) 844-8978 | Fax: (078) 844-0086</p><p>OFFICE OF THE PHYSICAL PLANT AND MAINTENANCE</p><hr></div></div><h2>Work Order Summary Report</h2><table><thead><tr><th>WO#</th><th>Requesting Party</th><th>Building</th><th>Date Requested</th><th>Status</th></tr></thead><tbody>`);
+      printWindow.document.write(`<div class="header"><img src="images/UCV.png" alt="logo" class="left"><img src="images/oppm logo.png" alt="logo" class="right"><div class="university-info"><h3>UNIVERSITY OF CAGAYAN VALLEY</h3><p>Victor Ventura Perez (VVP) Campus<br>Tuguegarao City<br>(078) 844-8978 | Fax: (078) 844-0086</p><p>OFFICE OF THE PHYSICAL PLANT AND MAINTENANCE</p><hr></div></div><h2>Work Order Summary Report</h2><table><thead><tr><th>WO#</th><th>Requesting Party</th><th>Building</th><th>Date Requested</th><th>Status</th></tr></thead><tbody>`);
       orders.forEach(order => {
         printWindow.document.write(`<tr><td>${order.woNumber}</td><td>${order.reqParty}</td><td>${order.building}</td><td>${order.dateRequested}</td><td>${order.status}</td></tr>`);
       });
@@ -1976,4 +1976,5 @@
     function viewAllGanttCharts() { const orders = allWorkOrders; if (orders.length === 0) { alert("No work orders available to display Gantt charts."); return; } document.getElementById('selected-wo-details-section').style.display = 'none'; const allGanttSection = document.getElementById('all-gantt-charts-section'); allGanttSection.style.display = 'block'; const container = document.getElementById('all-gantt-container'); container.innerHTML = ''; allGanttCharts.forEach(chart => chart.destroy()); allGanttCharts = []; orders.forEach((order, index) => { const card = document.createElement('div'); card.className = 'single-gantt-card'; card.innerHTML = `<h4>WO#: ${order.woNumber} (${order.reqParty})</h4><canvas id="gantt-canvas-${index}"></canvas>`; container.appendChild(card); const ctx = document.getElementById(`gantt-canvas-${index}`).getContext('2d'); const validActivities = (order.activities || []).filter(a => a.startDate && a.endDate); if (validActivities.length === 0) { ctx.font = "14px Arial"; ctx.fillStyle = "#888"; ctx.textAlign = "center"; ctx.fillText("No activities to display.", ctx.canvas.width / 2, 75); return; } const datasets = []; let minDate = new Date('2999-12-31'); let maxDate = new Date('1970-01-01'); validActivities.forEach((activity, activityIndex) => { const activityData = []; const startDate = new Date(activity.startDate); const endDate = new Date(activity.endDate); if (startDate.getTime() > maxDate.getTime()) maxDate = new Date(startDate); if (endDate.getTime() > maxDate.getTime()) maxDate = new Date(endDate); if (startDate.getTime() < minDate.getTime()) minDate = new Date(startDate); let currentDate = new Date(startDate); while (currentDate <= endDate) { activityData.push({ x: new Date(currentDate), y: activity.name || 'Untitled Activity', r: 10 }); currentDate.setDate(currentDate.getDate() + 1); } datasets.push({ label: activity.name || 'Untitled Activity', data: activityData, backgroundColor: colors[activityIndex % colors.length], pointStyle: 'rect', radius: 10, }); }); maxDate.setDate(maxDate.getDate() + 1); minDate.setDate(minDate.getDate() - 1); const chart = new Chart(ctx, { type: 'bubble', data: { datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { title: (context) => context[0].dataset.label, label: (context) => `Date: ${new Date(context.raw.x).toLocaleDateString()}` } } }, scales: { y: { type: 'category', labels: validActivities.map(a => a.name || 'Untitled Activity'), offset: true, grid: { display: true, color: 'rgba(0, 0, 0, 0.15)' } }, x: { type: 'time', time: { unit: 'day', displayFormats: { day: 'MMM d' } }, min: minDate, max: maxDate, grid: { display: true, color: 'rgba(0, 0, 0, 0.15)' } } } } }); allGanttCharts.push(chart); }); }
 </script>
 </body>
+
 </html>
